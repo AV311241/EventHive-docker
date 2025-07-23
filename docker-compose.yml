@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: eventhive
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - eventhive-network
+
+  api-gateway:
+    build:
+      context: ./ApiGateway-EventHive
+    container_name: api-gateway
+    ports:
+      - "8001:8080"
+    depends_on:
+      - mysql
+    networks:
+      - eventhive-network
+
+  BookingService:
+    build:
+      context: ./BookingService
+    container_name: BookingService
+    ports:
+      - "8100:8080"
+    depends_on:
+      - mysql
+    networks:
+      - eventhive-network
+
+
+  user-service:
+    build:
+      context: ./UserService
+    container_name: user-service
+    ports:
+      - "9898:8080"
+    depends_on:
+      - mysql
+    networks:
+      - eventhive-network
+
+  EventListing:
+    build:
+      context: ./EventListing
+    container_name: EventListing
+    ports:
+      - "8000:8080"
+    depends_on:
+      - mysql
+    networks:
+      - eventhive-network
+
+
+  payment-gatway:
+    build:
+      context: ./payment-gatway
+    container_name: payment-gatway
+    ports:
+      - "8300:8080"
+    depends_on:
+      - mysql
+    networks:
+      - eventhive-network
+
+
+  EventHive-eureka-server:
+    build:
+      context: ./EventHive-eureka-server
+    container_name: EventHive-eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - eventhive-network
+
+ 
+
+networks:
+  eventhive-network:
+    driver: bridge
