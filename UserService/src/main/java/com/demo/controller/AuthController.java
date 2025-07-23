@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private AuthService service;
+    private AuthService service; 
     @Autowired
     private UserCredentialRepository userRepo;
     @Autowired
