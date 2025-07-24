@@ -45,6 +45,7 @@ services:
       - eventhive-eureka-server
       - mysql
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/eventhive
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eventhive-eureka-server:8761/eureka/
     networks:
       - eventhive-network
@@ -73,6 +74,7 @@ services:
       - mysql
       - eventhive-eureka-server
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/eventhive
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eventhive-eureka-server:8761/eureka/
     networks:
       - eventhive-network
@@ -87,6 +89,7 @@ services:
       - mysql
       - eventhive-eureka-server
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/eventhive
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eventhive-eureka-server:8761/eureka/
     networks:
       - eventhive-network

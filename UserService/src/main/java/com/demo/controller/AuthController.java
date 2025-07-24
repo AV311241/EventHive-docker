@@ -32,7 +32,7 @@ public class AuthController {
     private UserCredentialRepository userRepo;
     @Autowired
     private AuthenticationManager authenticationManager;
-    
+     
 
     @PostMapping("/register")
     public String addNewUser(@RequestBody @Valid UserCredential user) {
@@ -61,6 +61,12 @@ public class AuthController {
     }
 
     
+    
+    @GetMapping("/test")
+    public String test() {
+    	return "working auth";
+    }
+
     @GetMapping("/getUserDetailsbyUserId/{userId}")
     public ResponseEntity<?> getUserDetailsbyUserId(@PathVariable int userId) {
     	UserCredential userDetails =  service.getUserDetailsbyUserId(userId);
