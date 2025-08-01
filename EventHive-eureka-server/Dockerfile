@@ -1,28 +1,31 @@
-# Builder stage: build the application
-FROM maven:3.8.6-openjdk-17-slim AS build
+# ----------- Stage 1: Build the application -----------
 
+# Use Maven with JDK for building
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+
+# Set working directory inside container
 WORKDIR /app
 
-# Copy the pom.xml and download dependencies
+# Copy Maven project files
 COPY pom.xml .
-RUN mvn dependency:go-offline
-
-# Copy the rest of the application code
-COPY . .
+COPY src ./src
 
 # Package the application
 RUN mvn clean package -DskipTests
 
-# Runtime stage: run the application
-FROM openjdk:17-jdk-slim
+# ----------- Stage 2: Run the application -----------
 
+# Use a lightweight JDK image to run the app
+FROM eclipse-temurin:17-jdk-alpine
+
+# Set working directory
 WORKDIR /app
 
-# Copy the built JAR from the builder stage
+# Copy built JAR from previous stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the port your Spring Boot app listens on
+# Expose application port
 EXPOSE 8080
 
-# Run the JAR
+# Run the Spring Boot app
 ENTRYPOINT ["java", "-jar", "app.jar"]
